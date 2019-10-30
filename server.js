@@ -70,11 +70,11 @@ const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
 });
 
 const analyzeParams = {
-  'url': 'www.wsj.com/news/markets',
+  'url': 'https://twiitgov.mybluemix.net/search/Trump',
   'features': {
     'sentiment': {
       'targets': [
-        'stocks'
+        'data'
       ]
     }
   }
