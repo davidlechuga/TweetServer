@@ -1,12 +1,12 @@
 const Twitter = require ('twit');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3003;
 
 const apiClient = new Twitter ({
 
-    consumer_key: 'cl3PlwkI81huelMeqzCbSGhUj',
-    consumer_secret: 'dEXyJw2uqWVpsgvidy8zluwekRvQalACoPmiSoz0fdnfjUVS4B',
-    access_token: '1167944322710429696-j4XoKJTrppQOaKIFPIw3KyIosnfFqH',
-    access_token_secret: 'uaxRZWqB9D1Tl2Q1bugx8HvqbM4bV0TOxYTmVu7NPxoD9'
+    consumer_key: 'RjQ6b3ejorTC1HDTLyUIabVDD',
+    consumer_secret: '1TFu9jICyxDYz22ysOcrLlQIVqug29mYZhxWqBLEV3E8PCoJxQ',
+    access_token: '1167944322710429696-63X6qSTQeSqPnWVaMVlN3aLT6Kq2Y3',
+    access_token_secret: 'j5t88S0rELYHqAohyQ3f0wK5orFcbzo1D3W4EhZo65Su0'
     
 });
 
