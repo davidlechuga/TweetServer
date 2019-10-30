@@ -70,10 +70,12 @@ const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
 });
 
 const analyzeParams = {
-  'url': 'https://api.twitter.com/1.1/search/tweets',
+  'url': 'www.wsj.com/news/markets',
   'features': {
     'sentiment': {
-      
+      'targets': [
+        'stocks'
+      ]
     }
   }
 };
