@@ -7,66 +7,12 @@ app.use(require('cors')());
 app.use(require('body-parser').json());
 
 
-
-app.get('/resumenes', async (req, res) => {
-
-
-  const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
-  const { IamAuthenticator } = require('ibm-watson/auth');
-
-  const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
-  version: '2019-07-12',
-  authenticator: new IamAuthenticator({
-    apikey: process.env.API_KEY,
-  }),
-  url: process.env.URL,
-});
-
-const analyzeParams = {
-  'url': 'https://twiitgov.mybluemix.net/search/AMLO',
-  'features': {
-    'keywords': {
-      'sentiment': true,
-      'emotion': true,
-      'limit': 3
-    }
-  }
-};
-
-naturalLanguageUnderstanding.analyze(analyzeParams)
-  .then(analysisResults => {
-   const data = analysisResults
-
-  console.log(data);
-
-  //  for(let i = 0 ; i < data.result.keywords.length; i++) {
-  //    console.log(data.result.keywords[i]);
-  //    console.log(`aqui esta el arreglo ${data.result.keywords[i]}`);
-
-  //  }
-  //  console.log(data)
-  
-
-   res.json ({
-    success: true,
-    message: 'ibm analyzer',
-    payload: data.result.keywords
-
-  })
-
-
-  })
-  .catch(err => {
-    console.log('error:', err);
-  });
-  
-})
-
-
+ 
+ /* ::::::::  EXTRACCION DE LOS ULTIMOS TWITS  ::::::::.  */ 
 
 app.get('/tweets',async (req,res) => {
 
-    const params = {count:1, tweet_mode: 'extended' };
+    const params = {count:3, tweet_mode: 'extended' };
     const dataTweets = await config.apiClient.get('statuses/home_timeline', params)
     .then((data)=>{
         console.log(`aqui esta la : ${data}`)
@@ -83,30 +29,13 @@ app.get('/tweets',async (req,res) => {
             payload: {tweets: dataTweets}
 
     })
-
-    
-    // const {tweets} = payload;
-    // const {data} = tweets;
-    //  console.log(tweets)
-
-  
-
-    // .then(timeline => {
-    //     console.log(timeline.data)
-    //     res.json({
-    //         success: true,
-    //         message: "Tweets Ok",
-    //         payload: {tweets: timeline}
-    //     })
-    // })
-    // .catch(error => {
-    //     res.send(error)
-    // })
 });
+
+ /* ::::::::  EXTRACCION DE LOS TWITS POR PALABRA CLAVE  ::::::::.  */ 
 
 app.get('/search/:word',(req,res) => {
 
-    const params = {count:1, tweet_mode: 'extended', q: req.params.word, result_type: 'recent', lang: 'es'};
+    const params = {count:3, tweet_mode: 'extended', q: req.params.word, result_type: 'recent', lang: 'es'};
     config.apiClient.get('search/tweets', params)
     .then(results => {
         res.send(results)
@@ -115,6 +44,54 @@ app.get('/search/:word',(req,res) => {
         res.send(error)
     })
 });
+
+
+
+
+ /* ::::::::  PALABRAS CLAVE IBM ::::::::.  */ 
+
+ app.get('/resumenes', async (req, res) => { 
+
+  const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
+  const { IamAuthenticator } = require('ibm-watson/auth');
+
+  const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
+  version: '2019-07-12',
+  authenticator: new IamAuthenticator({
+    apikey: process.env.API_KEY,
+  }),
+  url: process.env.URL,
+});
+
+const analyzeParams = {
+  'url': 'https://twiitgov.mybluemix.net/search/marihuana',
+  'features': {
+    'keywords': {
+      'sentiment': true,
+      'emotion': true,
+      'limit': 3
+    }
+  }
+};
+
+naturalLanguageUnderstanding.analyze(analyzeParams)
+  .then(analysisResults => {
+   const data = analysisResults
+
+  console.log(data);
+
+   res.json ({
+    success: true,
+    message: 'ibm analyzer',
+    payload: data.result.keywords
+
+    })
+  })
+  .catch(err => {
+    console.log('error:', err);
+  });
+  
+})
 
 
 
@@ -152,9 +129,6 @@ app.get('/search/:word',(req,res) => {
 //   .catch(err => {
 //     console.log('error:', err);
 //   });
-
-
-
 
 
 
@@ -228,49 +202,6 @@ app.get('/search/:word',(req,res) => {
 //   .catch(err => {
 //     console.log('error:', err);
 //   });
-
-
-
-
-
-
-
-/* ::::::::  PALABRAS CLAVE IBM ::::::::.  */ 
-
-
-const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
-const { IamAuthenticator } = require('ibm-watson/auth');
-
-const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
-  version: '2019-07-12',
-  authenticator: new IamAuthenticator({
-    apikey: process.env.API_KEY,
-  }),
-  url: process.env.URL,
-});
-
-const analyzeParams = {
-  'url': 'https://twiitgov.mybluemix.net/search/AMLO',
-  'features': {
-    'keywords': {
-      'sentiment': true,
-      'emotion': true,
-      'limit': 3
-    }
-  }
-};
-
-naturalLanguageUnderstanding.analyze(analyzeParams)
-  .then(analysisResults => {
-   const data= analysisResults
-  //  console.log(data)
-   const {result} = data
-    dataIBM = data
-   console.log(result)
-  })
-  .catch(err => {
-    console.log('error:', err);
-  });
 
 
 app.listen(config.port,() => {
