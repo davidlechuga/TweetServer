@@ -31,7 +31,7 @@ var textoASubir = [];
 var textoASubir = new Array();
 
 app.get('/search/:word', (req, res) => {
-	const params = { count: 100, tweet_mode: 'extended', q: req.params.word, result_type: 'recent', lang: 'es' };
+	const params = { count: 50, tweet_mode: 'extended', q: req.params.word, result_type: 'recent', lang: 'es' };
 	config.apiClient
 		.get('search/tweets', params)
 		.then((data) => {
