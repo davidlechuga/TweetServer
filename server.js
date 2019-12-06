@@ -27,41 +27,23 @@ app.use(require('body-parser').json());
 
 /* ::::::::  EXTRACCION DE LOS TWITS POR PALABRA CLAVE  ::::::::.  */
 
-var textoASubir = [];
-var textoASubir = new Array();
-
 app.get('/search/:word', (req, res) => {
-	const params = { count: 50, tweet_mode: 'extended', q: req.params.word, result_type: 'recent', lang: 'es' };
+	const params = { count: 3, tweet_mode: 'extended', q: req.params.word, result_type: 'recent', lang: 'es' };
 	config.apiClient
 		.get('search/tweets', params)
 		.then((data) => {
-			res.send(data.data.statuses.full_text);
+			res.send(data.data.statuses);
 			data.data.statuses.forEach((twit) => {
-			// console.log('twit: ' + twit.full_text);
+				console.log('twit: ' + twit.full_text);
 			});
 			// console.log(data.data.statuses[0].full_text);
 			// console.log(data.data.statuses[1].full_text);
-      // console.log(data.data.statuses[2].full_text);
-      
-      textoASubir[0] = data.data.statuses[0].full_text;
-      // console.log(  ` comentario 1 ${ textoASubir[0] }`);
-       textoASubir[1] = data.data.statuses[1].full_text;
-      // console.log( ` comentario 2 ${ textoASubir[1] }` );
-       textoASubir[2] = data.data.statuses[2].full_text;
-      // console.log( ` comentario 3 ${ textoASubir[2] }` );
-      textoASubir[3] += textoASubir[0] + textoASubir[1] + textoASubir[2];
-      console.log(textoASubir[3]);
-
-      
-      
+			// console.log(data.data.statuses[2].full_text);
 		})
 		.catch((error) => {
 			res.send(error);
 		});
 });
-
-
-
 // config.apiClient.get('search/tweets', { q: '#marihuana' }, function(error, tweets, response) {
 // 	tweets.statuses.forEach(function(tweet) {
 // 		console.log('tweet: ' + tweet.text);
@@ -77,26 +59,27 @@ app.get('/resumenes', async (req, res) => {
 	const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
 		version: '2019-07-12',
 		authenticator: new IamAuthenticator({
-			apikey: process.env.API_KEY
+			apikey: process.env.API_KEY,
 		}),
-		url: process.env.URL
+		url: process.env.URL,
 	});
 
 	const analyzeParams1 = {
-		url: 'https://twiitgov.herokuapp.com/',
+		url: 'https://twiitgov.mybluemix.net/search/marihuana',
+
 		features: {
 			entities: {
 				sentiment: true,
 				emotion: true,
-				limit: 3
-			},
+        limit: 3
+        
+      },
 			keywords: {
 				sentiment: true,
 				emotion: true,
 				limit: 3
 			}
-    },
-
+		}
 	};
 
 	naturalLanguageUnderstanding
