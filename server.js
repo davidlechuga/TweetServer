@@ -14,10 +14,8 @@ app.use(require('body-parser').json());
 // 		console.log(`aquiiii esta la :${data}`);
 // 		return data;
 // 	});
-
 // 	console.log('Data tweets');
 // 	console.log(dataTweets);
-
 // 	res.json({
 // 		success: true,
 // 		message: 'Tweets Ok',
